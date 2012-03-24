@@ -1,458 +1,261 @@
-import java.awt.*;
+package com_ravnaandtines;
+
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
-/** 
-*  Class EphemerisIIFrame
-*
-*/
+class E2WizBox extends JPanel implements ChangeListener {
 
-class logoImagePanel extends Panel
-{
-	Image i = Toolkit.getDefaultToolkit().createImage(new TinesLogo());
+    ////private final JSpinner scalebar;
+    //private final JCheckBox nine;
+    //private final JCheckBox yuthu;
+    //private final JCheckBox variable;
+    //private final JLabel tilted;
+    //private final JSpinner stilt,  etilt,  wtilt;
+    //private final JSpinner sday,  wday;
+    private final JCheckBox uleria;
+    private final JSpinner sharday;
+    private final JSpinner sharhr;
+    private final JSpinner twinday;
+    private final JSpinner twinhr;
+    private final JSpinner artiaday;
+    private final JSpinner artiahr;
 
-	public void paint(Graphics  g)
-	{
-    Dimension d = getSize();
-		g.drawImage(i, 0,0, d.width, d.height, this);
-	}
+    public E2WizBox() {
+        super();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+                
+        JPanel p2 = new JPanel();
+        p2.add(new JLabel("Dome size km"));
+        final JSpinner scalebar = new JSpinner(new SpinnerNumberModel(20000, 20000, 250000, 500));
+        scalebar.addChangeListener(this);
+        p2.add(scalebar);
+        add(p2);
 
-  public Dimension minimumSize()
-  {
-         return new Dimension(59,59);
-  }
-  public Dimension maximumSize()
-  {
-         return new Dimension(236,236);
-  }
-  public Dimension preferredSize()
-  {
-         return new Dimension(118,118);
-  }
-}
+        p2 = new JPanel();
+        
+        /*
+        p2.setLayout(new BoxLayout(p2, BoxLayout.Y_AXIS));
+        nine = new JCheckBox("9/10.6 degree tilt", true);
+        p2.add(nine);
+        nine.addItemListener(new ItemListener() {
 
-class E2WizBox extends Frame implements SlideListener {
+            public void itemStateChanged(final ItemEvent e) {
+                E2Param.yuthu = yuthu.isSelected();
+                if (nine.isSelected()) {
+                    E2Param.reset();
+                }
+            }
+        });
 
-      Slider scalebar;
-      Label scale;
-      CheckboxGroup cbg;
-      Checkbox nine;
-      Checkbox yuthu;
-      Checkbox variable;
-      Label tilted;
+        yuthu = new JCheckBox("Overhead at Yuthuppa (3600km N of centre)", false);
+        p2.add(yuthu);
+        yuthu.addItemListener(new ItemListener() {
 
-      Slider stilt, etilt, wtilt;
-      Label stl, etl, wtl;
-      Slider sday, wday;
-      Label sdl, wdl;
+            public void itemStateChanged(final ItemEvent e) {
+                E2Param.yuthu = yuthu.isSelected();
+            }
+        });
+        tilted = new JLabel(tilt());
+        p2.add(tilted);
+        variable = new JCheckBox("Freehand control of tilt and day length", false);
+        p2.add(variable);
+        variable.addItemListener(new ItemListener() {
 
-      Checkbox uleria;
+            public void itemStateChanged(final ItemEvent e) {
+                E2Param.yuthu = yuthu.isSelected();
+                E2Param.summerTilt = (Double)stilt.getValue();
+                E2Param.winterTilt = (Double)wtilt.getValue();
+                E2Param.equinoxTilt = (Double)etilt.getValue();
+                E2Param.summerDay = ((Double) sday.getValue() - 12)/24.0;
+                E2Param.winterDay = ((Double) wday.getValue() - 12)/24.0;
+            }
+        });
+        */
+        
+        uleria = new JCheckBox("Uleria period 1/3 siderial day");
+        p2.add(uleria);
+        uleria.setSelected(false);
+        uleria.addItemListener(new ItemListener() {
 
-      Slider sharday;
-      Label shardayl;
-      Slider sharhr;
-      Label sharhrl;
+            public void itemStateChanged(final ItemEvent e) {
+                E2Param.uleria = uleria.isSelected();
+            }
+        });
+        add(p2);
 
-      Slider twinday;
-      Label twindayl;
-      Slider twinhr;
-      Label twinhrl;
+        p2 = new JPanel();
+        p2.setLayout(new GridBagLayout());
+        final GridBagConstraints c = new GridBagConstraints();
+        c.gridheight = c.gridwidth = 1;
 
-      Slider artiaday;
-      Label artiadayl;
-      Slider artiahr;
-      Label artiahrl;
+        /*
+        c.gridy = 0;
+        stilt = AddSpinner(p2, c,
+                "Summer tilt (deg)",
+                new SpinnerNumberModel(9.0, 0.0, 90.0, 0.1));
 
-      public E2WizBox()
-      {
-             super("Wizard mode controls");
-             setLayout(new GridLayout(1,0));
-             setBackground(Color.lightGray);
+        c.gridy = 1;
+        etilt = AddSpinner(p2, c, 
+               "Equinox tilt (deg)",
+               new SpinnerNumberModel(0.0, -9.0, 10.6, 0.1));
 
-             Panel p = new Panel();
-             p.setLayout(new GridLayout(0,1));
-             p.add(new Label("Dome size 000s km"));
-             scalebar = new Slider(20, 5,
-                    20, 250);
-             scalebar.addSlideListener(this);
-             p.add(scalebar);
-             scale = new Label("20");
-             p.add(scale);
-             cbg = new CheckboxGroup();
-             nine = new Checkbox("9/10.6 degree tilt",cbg,true);
-             p.add(nine);
-             nine.addItemListener(new ItemListener() {
-              public void itemStateChanged(ItemEvent e) {
-                   E2Param.yuthu = yuthu.getState();
-                   if(nine.getState())
-                   {
-                       E2Param.summerTilt = 9.0;
-                       E2Param.winterTilt = -10.6;
-                       E2Param.equinoxTilt = 0;
-                       E2Param.summerDay = 0.1;
-                       E2Param.winterDay = -1.06/9.0;
-                   }
-              }
-             });
+        c.gridy = 2;
+        wtilt = AddSpinner(p2, c, 
+               "Winter tilt (deg)",
+               new SpinnerNumberModel(-10.6, -90.0, 0.0, 0.1));
 
-             yuthu = new Checkbox("Overhead at Yuthuppa (3600km N of centre)", cbg,false);
-             p.add(yuthu);
-             yuthu.addItemListener(new ItemListener() {
-              public void itemStateChanged(ItemEvent e) {
-                 E2Param.yuthu = yuthu.getState();
-              }
-             });
-             tilted = new Label(tilt());
-             p.add(tilted);
-             variable = new Checkbox("Freehand control of tilt and day length",cbg,false);
-             p.add(variable);
-             variable.addItemListener(new ItemListener() {
-              public void itemStateChanged(ItemEvent e) {
-                   E2Param.yuthu = yuthu.getState();
-                   E2Param.summerTilt = stilt.getValue();
-                   E2Param.winterTilt = wtilt.getValue();
-                   E2Param.equinoxTilt = etilt.getValue();
-                   E2Param.summerDay = 0.01*sday.getValue();
-                   E2Param.winterDay = 0.01*wday.getValue();
-              }
-             });
+        c.gridy = 3;
+        sday = AddSpinner(p2, c, 
+               "Summer day length (hours/24)",
+               new SpinnerNumberModel(14.4, 12.0, 24.0, 0.1));
 
-             uleria = new Checkbox("Uleria period 1/3 siderial day");
-             p.add(uleria);
-             uleria.setState(false);
-             uleria.addItemListener(new ItemListener() {
-              public void itemStateChanged(ItemEvent e) {
-                 E2Param.uleria = uleria.getState();
-              }
-             });
+        c.gridy = 4;
+        wday = AddSpinner(p2, c, 
+               "Winter day length (hours/24)",
+               new SpinnerNumberModel(9.1, 0.0, 12.0, 0.1));
+         */
 
-             add(p);
+        c.gridy = 5;
+        sharday = addSpinner(p2, c, 
+               "Shargash rises year 1 on day",
+               new SpinnerNumberModel(1, 1, 28, 1));
 
-             p = new Panel();
-             p.setLayout(new GridLayout(0,1));
+        final String hour = "at hour (of 24)";
+        c.gridy = 6;
+        sharhr = addSpinner(p2, c, 
+               hour,
+               new SpinnerNumberModel(0.0, 0.0, 23.9, 0.1));
 
-             stilt = new Slider(9, 5, 0, 90);
-             stilt.addSlideListener(this);
-             p.add(stilt);
-             stl = new Label("Summer tilt 9 deg");
-             p.add(stl);
-             etilt = new Slider(0, 5, -11, 9);
-             etilt.addSlideListener(this);
-             p.add(etilt);
+        c.gridy = 7;
+        twinday = addSpinner(p2, c, 
+               "Twinstar rises year 1 on day",
+               new SpinnerNumberModel(1, 1, 6, 1));
 
-             etl = new Label("Equinox tilt 0 deg");
-             p.add(etl);
-             wtilt = new Slider(-11, 5, -90, 0);
-             p.add(wtilt);
-             wtilt.addSlideListener(this);
-             wtl = new Label("Winter tilt -11 deg");
-             p.add(wtl);
+        c.gridy = 8;
+        twinhr = addSpinner(p2, c,
+               hour,
+               new SpinnerNumberModel(0.0, 0.0, 23.9, 0.1));
 
-             sday = new Slider(10, 5, 0, 50);
-             sday.addSlideListener(this);
-             p.add(sday);
-             sdl = new Label("Summer day length 14.4h");
-             p.add(sdl);
-             wday = new Slider(-12, 5, -50, 0);
-             wday.addSlideListener(this);
-             p.add(wday);
-             wdl = new Label("Winter day length 9.1h");
-             p.add(wdl);
 
-             add(p);
+        c.gridy = 9;
+        artiaday = addSpinner(p2, c, 
+               "Artia rises year 1 on day",
+               new SpinnerNumberModel(1, 1, 112, 1));
 
-             p = new Panel();
-             p.setLayout(new GridLayout(0,1));
-             sharday = new Slider(0, 5, 0, 28);
-             sharday.addSlideListener(this);
-             p.add(sharday);
-             shardayl = new Label("Shargash rises day 1 year 1");
-             p.add(shardayl);
-             sharhr = new Slider(0, 5, 0, 144);
-             sharhr.addSlideListener(this);
-             p.add(sharhr);
-             sharhrl = new Label("at 0h 0m");
-             p.add(sharhrl);
+        c.gridy = 10;
+        artiahr = addSpinner(p2, c,
+               hour,
+               new SpinnerNumberModel(0.0, 0.0, 23.9, 0.1));
+        add(p2);
+    }
 
-             twinday = new Slider(0, 1, 0, 6);
-             twinday.addSlideListener(this);
-             p.add(twinday);
-             twindayl = new Label("Twinstar rises day 1 year 1");
-             p.add(twindayl);
-             twinhr = new Slider(0, 5, 0, 144);
-             twinhr.addSlideListener(this);
-             p.add(twinhr);
-             twinhrl = new Label("at 0h 0m");
-             p.add(twinhrl);
+    private JSpinner addSpinner(final JPanel p2, final GridBagConstraints c,
+            final String caption, final SpinnerNumberModel model) {
+        c.gridx = 0;
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.NONE;
+        p2.add(new JLabel(caption), c);
+        final JSpinner tmp = new JSpinner(model);
+        tmp.addChangeListener(this);
 
-             artiaday = new Slider(0, 5, 0, 112);
-             artiaday.addSlideListener(this);
-             p.add(artiaday);
-             artiadayl = new Label("Artia rises day 1 year 1");
-             p.add(artiadayl);
-             artiahr = new Slider(0, 5, 0, 144);
-             artiahr.addSlideListener(this);
-             p.add(artiahr);
-             artiahrl = new Label("at 0h 0m");
-             p.add(artiahrl);
-             add(p);
+        c.gridx = 1;
+        c.anchor = GridBagConstraints.EAST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        p2.add(tmp, c);
+        return tmp;
+    }
 
-             pack();
-      }
+    /*private String tilt() {
+        final double size = 3600.0 / (Integer) scalebar.getValue();
+        final double t = Math.asin(size) * 180.0 / Math.PI;
+        final double t2 = 10.6 * t / 9;
+        java.text.NumberFormat nf = new java.text.DecimalFormat("###.##");
 
-      private String tilt()
-      {
-             double size = 3.6/scalebar.getValue();
-             double t = Math.asin(size)*180.0/Math.PI;
-             double t2 = 10.6*t/9;
-             return ""+t+"/"+t2+" degree tilt";
-      }
+        return nf.format(t) + "/" + nf.format(t2) + " degree tilt";
+    }*/
 
-      	public void slideEvent(Slider target)
-	      {
-               if(target == scalebar)
-               {
-                   scale.setText(""+scalebar.getValue());
-                   tilted.setText(tilt());
-                   E2Param.domeRadius = scalebar.getValue();
-                   return;
-               }
-               else if(target == etilt)
-               {
-                   stilt.setValues(stilt.getValue(), 5, etilt.getValue(), 90);
-                   wtilt.setValues(wtilt.getValue(), 5, -90, etilt.getValue());
-                   etl.setText("Equinox tilt "+etilt.getValue()+" deg");
-                   if(variable.getState()) E2Param.equinoxTilt = etilt.getValue();
-                   return;
-               }
-              else if(target == stilt)
-               {
-                   etilt.setValues(etilt.getValue(), 5, wtilt.getValue(), stilt.getValue());
-                   stl.setText("Summer tilt "+stilt.getValue()+" deg");
-                   if(variable.getState()) E2Param.summerTilt = stilt.getValue();
-                   return;
-               }
-              else if(target == wtilt)
-               {
-                   etilt.setValues(etilt.getValue(), 5, wtilt.getValue(), stilt.getValue());
-                   wtl.setText("Winter tilt "+wtilt.getValue()+" deg");
-                   if(variable.getState()) E2Param.winterTilt = wtilt.getValue();
-                   return;
-               }
-               else if(target == sday)
-               {
-                   double frac = sday.getValue()*0.01;
-                   if(variable.getState()) E2Param.summerDay = frac;
-                   frac *= 24;
-                   frac += 12;
-                   sdl.setText("Summer day length "+frac+"h");
-                   return;
-               }
-               else if(target == wday)
-               {
-                   double frac = wday.getValue()*0.01;
-                   if(variable.getState()) E2Param.winterDay = frac;
-                   frac *= 24;
-                   frac += 12;
-                   wdl.setText("Winter day length "+frac+"h");
-                   return;
-               }
-               else if(target == sharday || target == sharhr)
-               {
-                   E2Param.shargashRise = sharday.getValue()+sharhr.getValue()/144.0;
-                   shardayl.setText("Shargash rises day "+sharday.getValue()+" year 1");
-                   int hr = sharhr.getValue()/6;
-                   int min = (sharhr.getValue()%6)*10;
-                   sharhrl.setText("at "+hr+"h "+min+"m");
-                   return;
-               }
-               else if(target == twinday || target == twinhr)
-               {
-                   E2Param.twinRise = twinday.getValue()+twinhr.getValue()/144.0;
-                   twindayl.setText("Twinstar rises day "+twinday.getValue()+" year 1");
-                   int hr = twinhr.getValue()/6;
-                   int min = (twinhr.getValue()%6)*10;
-                   twinhrl.setText("at "+hr+"h "+min+"m");
-                   return;
-               }
-               else if(target == artiaday || target == artiahr)
-               {
-                   E2Param.artiaRise = artiaday.getValue()+artiahr.getValue()/144.0;
-                   artiadayl.setText("Artia rises day "+artiaday.getValue()+" year 1");
-                   int hr = artiahr.getValue()/6;
-                   int min = (artiahr.getValue()%6)*10;
-                   artiahrl.setText("at "+hr+"h "+min+"m");
-                   return;
-               }
+    public void stateChanged(final ChangeEvent evt) {
+        /*if (evt.getSource() == scalebar) {
+            tilted.setText(tilt());
+            E2Param.domeRadius = ((Integer) scalebar.getValue()) /1000.0;
+            return;
+        } else if (evt.getSource() == etilt) {
+            //(int value, int visible, int minimum, int maximum)
+            ((SpinnerNumberModel)stilt.getModel()).setMinimum((Double)etilt.getValue());
+            ((SpinnerNumberModel)wtilt.getModel()).setMaximum((Double)etilt.getValue());
+            if (variable.isSelected()) {
+                E2Param.equinoxTilt = (Double)etilt.getValue();
+            }
+            return;
+        } else if (evt.getSource() == stilt) {
+            ((SpinnerNumberModel)etilt.getModel()).setMinimum((Double)wtilt.getValue());
+            ((SpinnerNumberModel)etilt.getModel()).setMaximum((Double)stilt.getValue());
+            if (variable.isSelected()) {
+                E2Param.summerTilt = (Double) stilt.getValue();
+            }
+            return;
+        } else if (evt.getSource() == wtilt) {
+            ((SpinnerNumberModel)etilt.getModel()).setMinimum((Double)wtilt.getValue());
+            ((SpinnerNumberModel)etilt.getModel()).setMaximum((Double)stilt.getValue());
+            if (variable.isSelected()) {
+                E2Param.winterTilt = (Double) wtilt.getValue();
+            }
+            return;
+        } else if (evt.getSource() == sday) {
+            if (variable.isSelected()) {
+                E2Param.summerDay = ((Double) sday.getValue() - 12)/24.0;
+            }
+            return;
+        } else if (evt.getSource() == wday) {
+            if (variable.isSelected()) {
+                E2Param.winterDay = ((Double) wday.getValue() - 12)/24.0;
+            }
+            return;
+        } else */ if (evt.getSource() == sharday || evt.getSource() == sharhr) {
+            E2Param.shargashRise = (Integer)sharday.getValue() + (Double) sharhr.getValue() / 24.0;
+            return;
+        } else if (evt.getSource() == twinday || evt.getSource() == twinhr) {
+            E2Param.twinRise = (Integer)twinday.getValue() + (Double) twinhr.getValue() / 24.0;
+            return;
+        } else if (evt.getSource() == artiaday || evt.getSource() == artiahr) {
+            E2Param.artiaRise = (Integer)artiaday.getValue() + (Double) artiahr.getValue() / 24.0;
+            return;
         }
+    }
 }
 
+public class EphemerisIIFrame extends JFrame {
+    /**
+     * Builds a frame with minimal decoration
+     * @param title String to use as Frame title
+     */
+    public EphemerisIIFrame(final String title, final boolean master) {
+        super(title);
 
 
-public class EphemerisIIFrame extends Frame {
+        if (master) {
+            final JMenuBar mb = new JMenuBar();
+            final JMenu file = new JMenu("File");
+            mb.add(file);
+            file.addSeparator();
+            final JMenuItem exitMI = new JMenuItem("Exit");
+            exitMI.addActionListener(
+                    new ActionListener() {
 
-	EphemerisIIAnimation animation = null;
-   	private MenuItem exitMI;
-   	private MenuItem helpMI;
-   	private MenuItem printMI;
-    private CheckboxMenuItem wizardMI;
-   	private Menu file, help, show;
-   	private Button close;
-   	private Dialog d;
-   	private TextArea ta;
-    private logoImagePanel lip;
-    //private java.util.Properties pprop = new java.util.Properties();
-    private E2WizBox wizbox = new E2WizBox();
-	MenuBar mb;
+                        public void actionPerformed(final ActionEvent evt) {
+                            System.exit(0);
+                        }
+                    });
+            file.add(exitMI);
+            setJMenuBar(mb);
+        }
+        setDefaultCloseOperation(master
+                ? JFrame.EXIT_ON_CLOSE : JFrame.DO_NOTHING_ON_CLOSE);
 
-	public CheckboxMenuItem cbsunpath, cbsouthpath, cbnames, 
-			cbframe, cblight, cbobscure;
-
-   	/**
-   	* Default constructor with title"A BasicFrame instance" 
-   	*/
-   	public EphemerisIIFrame()
-   	{
-		this("A BasicFrame instance", true);
-   	}
-
-	public void associate(EphemerisIIAnimation a)
-	{
-		animation = a;
-		animation.associate(this);
-	}
-
-	/**
-	* Builds a frame with minimal decoration
-	* @param title String to use as Frame title
-	*/	
-   	public EphemerisIIFrame(String title, boolean master)
-   	{
-    		super(title);
-
-		    mb = new MenuBar();
-
-		    if(master)
-		    {
-			    file = new Menu(StringTable.FILE);
-			    mb.add(file);
-          file.addSeparator();
-			    exitMI = new MenuItem(StringTable.EXIT);
-			    file.add(exitMI);
-		    }
-
-		    show = new Menu("Show");
-		    mb.add(show);
-
-		    cbsunpath = new CheckboxMenuItem("Show sunpath");
-		    cbsunpath.setState(false);
-		    show.add(cbsunpath);
-
-		    cbsouthpath = new CheckboxMenuItem("Show southpath");
-		    cbsouthpath.setState(false);
-		    show.add(cbsouthpath);
-
-		    cbnames = new CheckboxMenuItem("Show names");
-		    cbnames.setState(true);
-		    show.add(cbnames);
-
-		    cbframe = new CheckboxMenuItem("Show Buserian frame");
-		    cbframe.setState(false);
-		    show.add(cbframe);
-
-		    cblight = new CheckboxMenuItem("Show Lightfore path");
-		    cblight.setState(false);
-		    show.add(cblight);
-
-		    cbobscure = new CheckboxMenuItem("Show stars during day");
-		    cbobscure.setState(true);
-		    show.add(cbobscure);
-
-        show.addSeparator();
-        wizardMI = new CheckboxMenuItem("Show wizard mode controls");
-        show.add(wizardMI);
-
-
-		    help = new Menu(StringTable.HELP);
-		    if(master)
-			    mb.setHelpMenu(help);
-		    else
-			    mb.add(help);
-
-		    helpMI = new MenuItem(StringTable.ABOUT);
-		    help.add(helpMI);
-
-		    setMenuBar(mb);
-		    close = null;
-      	d = null;
-        lip = null;
-		    ta = new TextArea(Licence.text, 20, 60);
     }
-
-   private void setupStickup()
-   {
-			if(d == null)
-			{
-				d = new Dialog(this, StringTable.LICTEXT, true);
-				d.setLayout(new BorderLayout(5,5));
-				d.add("Center", ta);
-        lip = new logoImagePanel();
-        Panel x = new Panel();
-        x.add(lip);
-        d.add("West", x);
-				Panel p = new Panel();
-				p.setLayout(new GridLayout(1,0));
-				close = new Button(StringTable.CLOSE);
-        close.addActionListener( new ActionListener() {
-           	public void actionPerformed(ActionEvent e)
-   	        {
-		          d.setVisible(false);
-  	        }});
-
-				p.add(new Label(""));
-				p.add(new Label(""));
-				p.add(close);
-				p.add(new Label(""));
-				p.add(new Label(""));
-				d.add("South", p);
-				d.pack();
-			}
-   }
-   /**
-   * Listens for the action - JDK 1.0 style
-   * @param e Event for action
-   * @param o Object acted on
-   * @return boolean value if event handled
-   * @see Component#action
-   */
-   public boolean action(Event e, Object o )
-   {
-		if(!(e.target instanceof MenuItem)) return false;
-		if(e.target == exitMI)
-		{
-			System.exit(0);
-		}
-		else if(e.target == helpMI)
-		{
-      ta.setText(Licence.text);
-      setupStickup();
-			d.show();
-			return true;
-		}
-    else if(e.target == wizardMI)
-    {
-      if(wizardMI.getState()) wizbox.show();
-      else wizbox.setVisible(false);
-    }
-		return false;
-   	}
-
-
-   	/**
-   	* Listens for the action - JDK 1.0 style
-   	* and dismisses the About dialog
-   	* @param b Component that acted 
-   	*/
-
 }
 
 /* end of file basicFrame.java */

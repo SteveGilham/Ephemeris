@@ -1,236 +1,210 @@
-//import package UK.co.demon.windsong.tines.?
+package com_ravnaandtines;
 
-import java.awt.*;
 import java.applet.*;
-import java.io.*;
+import java.awt.HeadlessException;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.util.concurrent.*;
 
 /** 
-*  Class EphemerisII
-*
-*  This is a simple Gloranthan planetarium
-*  It is implemented as a stand-alone Application, which has been
-*  derived from Applet, along the lines of the framework in Main.java
-*
-*
-*  Coded & copyright Mr. Tines <tines@windsong.demon.co.uk> 1997
-*  All rights reserved.  For full licence details see file Main.java
-*
-* @author Mr. Tines
-* @version 1.0 11-Oct-1997
-*
-*/
+ *  Class EphemerisII
+ *
+ *  This is a simple Gloranthan planetarium
+ *  It is implemented as a stand-alone Application, which has been
+ *  derived from Applet, along the lines of the framework in Main.java
+ *
+ *
+ *  Coded & copyright Mr. Tines <tines@windsong.demon.co.uk> 1997
+ *  All rights reserved.  For full licence details see file Main.java
+ *
+ * @author Mr. Tines
+ * @version 1.0 11-Oct-1997
+ *
+ */
+class E2HitAnimate extends Animation implements MouseMotionListener {
 
-class E2HitAnimate extends Animation implements MouseListener, MouseMotionListener{
-	public E2HitAnimate(Animated m)
-	{
-		super(m);
-	}
+    public E2HitAnimate(final Animated m, final JTextField hitfield) {
+        super(m);
+        this.hitfield = hitfield;
+        this.addMouseMotionListener(this);
+    }
+    private final JTextField hitfield;
 
-   private Frame hitframe = new Frame("Star finder");
-   private TextField hitfield = null;
+    public void mouseDragged(final MouseEvent e) {
+        //no-op
+    }
 
-   public void doHitfield(MouseEvent e)
-   {
-	    if(null == hitfield)
-	    {
-		    hitfield = new TextField(30);
-		    hitframe.add("Center",hitfield);
-		    hitframe.pack();
-      }
-	    if(((EphemerisIIAnimation)movingImage).hit(e, hitfield))
-	 	    hitframe.show();
-	    else
-		    hitframe.setVisible(false);
-   }
-
-  public void mouseClicked(MouseEvent e) {
-    //TODO: implement this java.awt.event.MouseListener method;
-  }
-
-  public void mousePressed(MouseEvent e) {
-    //TODO: implement this java.awt.event.MouseListener method;
-  }
-
-  public void mouseReleased(MouseEvent e) {
-    //TODO: implement this java.awt.event.MouseListener method;
-  }
-
-  public void mouseEntered(MouseEvent e) {
-    doHitfield(e);
-  }
-
-  public void mouseExited(MouseEvent e) {
-    hitframe.setVisible(false);
-  }
-
-  public void mouseDragged(MouseEvent e) {
-    //TODO: implement this java.awt.event.MouseMotionListener method;
-  }
-
-  public void mouseMoved(MouseEvent e) {
-    doHitfield(e);
-  }
+    public void mouseMoved(final MouseEvent e) {
+        ((EphemerisIIAnimation) movingImage).hit(e, hitfield);
+    }
 }
 
-public class EphemerisII extends Applet implements Runnable
-{
-   Thread appletDynamic;
-   E2HitAnimate engine;
-   EphemerisIIAnimation ac;
-	double spin = 0.0;
-	EphemerisIIControlPanel controls;
-   boolean master = false;
-   static EphemerisIIFrame window;
-   EphemerisIIFrame display;
+public class EphemerisII extends JApplet {
 
-   /**
-   * Main initialization
-   * @see Applet#init
-   */
-   public void init()
-   {
-	     ac = new EphemerisIIAnimation();
-	     engine = new E2HitAnimate(ac);
-	     Panel buttonbar = new Panel();
+    private E2HitAnimate engine;
+    private EphemerisIIAnimation ac;
+    private EphemerisIIControlPanel controls;
+    private boolean master = false;
+    private static EphemerisIIFrame window;
+    public static JCheckBox cbsunpath, cbsouthpath, cbnames, cbframe, cblight, cbobscure;
+    public static JCheckBox cbring;
+    ////private final java.util.Timer timer = new java.util.Timer();
+    private final ScheduledExecutorService scheduler =
+       Executors.newScheduledThreadPool(1);
+    private ScheduledFuture<?> taskHandle;
 
-	     Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-	     controls = new EphemerisIIControlPanel(buttonbar);
-	     ac.setAngles(spin,0.0);
-	     ac.associate(controls);
-	     Panel dummy = new Panel();
-	     dummy.add(new Label(" "));
-	     dummy.setBackground(Color.lightGray);
 
-	     if(master)
-	     {
-		       window.setSize(d.width/2, d.height/2);
-		       window.show();
+    /**
+     * Main initialisation
+     * @see Applet#init
+     */
+    @Override
+    public void init() {
+        final JTextField hitfield = new JTextField(25);
+        hitfield.setEditable(false);
+        ac = new EphemerisIIAnimation();
+        engine = new E2HitAnimate(ac, hitfield);
+        ac.setAngles(0.0, 0.0);
 
-		       // needed for java in JDK 1.1
-		       engine.setSize(d.width/2, d.height/2);
+        final JPanel statusbar = new JPanel();
+        final JTabbedPane tab = new JTabbedPane();
 
-		       window.setLayout(new BorderLayout());
-		       window.add("Center",engine);
-		       window.add("East",controls);
-		       window.add("South",buttonbar);
-		       window.add("North",dummy);
-		       window.associate(ac);
-           controls.associate(window);
-		       display = null;
-       }
-	     else
-	     {
-		       display = new EphemerisIIFrame("Gloranthan Ephemeris", false);
-		       display.setSize(d.width/2, d.height/2);
-		       display.show();
+        controls = new EphemerisIIControlPanel(statusbar, hitfield);
+        tab.add(controls, "Navigation", 0);
 
-		       // needed for java in JDK 1.1
-		       engine.setSize(d.width/2, d.height/2);
+        final JPanel show = new JPanel();
+        tab.add("Display options", show);
 
-		       display.setLayout(new BorderLayout());
-		       display.add("Center",engine);
-		       display.add("East",controls);
-		       display.add("South",buttonbar);
-		       display.add("North",dummy);
-		       display.associate(ac);
-           controls.associate(display);
-       }
-   }
+        final E2WizBox wizbox = new E2WizBox();
+        tab.add("Wizard Mode", wizbox);
 
-   /**
-   * Main (re-)start; thread is
-   * fired up at this point.
-   */
-   public void start()
-   {
-	if(display != null) display.show();
-   	if(null == appletDynamic)
-      {
-      	appletDynamic = new Thread(this);
-         	appletDynamic.start();
-      }
-   }
+        final JTextArea ta = new JTextArea(Licence.LICENSE_TEXT, 20, 20);
+        ta.setLineWrap(true);
+        ta.setWrapStyleWord(true);
+        tab.add("License", new JScrollPane(ta));
 
-   /**
-   * Main graceful suppression (iconise,
-   * leave page or whatever).  Called before
-   * destroy()
-   */
-   public void stop()
-   {
-	    if(display != null) display.setVisible(false);
-   	  if(null != appletDynamic)
-      {
-         appletDynamic.stop();
-         appletDynamic = null;
-      }
-   }
+        show.setLayout(new BoxLayout(show, BoxLayout.Y_AXIS));
 
-   /**
-   * Main final termination and tidy
-   */
-   public void destroy()
-   {
-   }
+        cbsunpath = new JCheckBox("Show sunpath");
+        cbsunpath.setSelected(false);
+        show.add(cbsunpath);
 
-   /**
-   * Output to screen
-   * @param g Graphic to which to draw
-   */
-   public void paint(Graphics g)
-   {
-	engine.repaint();
-   }
+        cbsouthpath = new JCheckBox("Show southpath");
+        cbsouthpath.setSelected(false);
+        show.add(cbsouthpath);
 
-   /**
-   * work routine
-   */
-   public void run()
-   {
-      for(;;)
-      {
-	      ac.setSize(getSize());
-	      controls.tick();
-	      engine.repaint();
-        try{ Thread.sleep(1000);}
-        catch(InterruptedException ignored){}
-      }
-   }
+        cbnames = new JCheckBox("Show names");
+        cbnames.setSelected(true);
+        show.add(cbnames);
 
-   /**
-   * Return parameter details
-   * @see Applet.getParameterInfo
-   */
-   public String[][] getParameterInfo()
-   {
-	String[][]t = {{"None"},{"N/A"},{"This applet is purely GUI driven"}};
-	return t;
-   }
+        cbframe = new JCheckBox("Show Buserian frame");
+        cbframe.setSelected(false);
+        show.add(cbframe);
 
-   /**
-   * Applicationizer function
-   */
-   public static void main(String [] args)
-   {
-      	EphemerisII self = new EphemerisII();
-		    self.master = true;
-		    window = new EphemerisIIFrame("Gloranthan Ephemeris", true);
+        cblight = new JCheckBox("Show Lightfore path");
+        cblight.setSelected(false);
+        show.add(cblight);
 
-		    window.setLayout(new BorderLayout());
-		    window.setBackground(Color.lightGray);
-		    window.add("North", self);
-      	self.init();
-		    Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		    window.setSize(d.width/2, d.height/2);
-      	window.show();
-      	self.run();
-      	self.stop();
-      	self.destroy();
-   }
+        cbobscure = new JCheckBox("Show stars during day");
+        cbobscure.setSelected(true);
+        show.add(cbobscure);
 
+        cbring = new JCheckBox("Real size objects", false);
+        show.add(cbring);        
+        
+        tab.setSelectedComponent(controls);
+
+        window = new EphemerisIIFrame("Gloranthan Ephemeris", master);
+        final Dimension d = setFrameSize();
+        engine.setSize(d.width / 2, d.height / 2);
+        window.setLayout(new BorderLayout());
+        window.add("Center", engine);
+        window.add("East", tab);
+        window.add("South", statusbar);
+        ac.associate(window);
+        ac.associate(controls);
+    }
+
+    private static Dimension setFrameSize() throws HeadlessException {
+        final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setSize(d.width / 2, d.height / 2);
+        window.setVisible(true);
+        return d;
+    }
+
+    /**
+     * Main (re-)start; timer is
+     * fired up at this point.
+     */
+    @Override
+    public void start() {
+        ////final java.util.TimerTask task = new java.util.TimerTask() {
+        final Runnable task = new Runnable() {
+
+            public void run() {
+                ac.setSize(engine.getSize());
+                controls.tick();
+                engine.repaint();
+            }
+        };
+        taskHandle = scheduler.scheduleAtFixedRate(task, 0, 1, TimeUnit.SECONDS);
+
+        ////timer.scheduleAtFixedRate(task, 0, 1000);
+    }
+
+    /**
+     * Main graceful suppression (iconise,
+     * leave page or whatever).  Called before
+     * destroy()
+     */
+    @Override
+    public void stop() {
+        window.setVisible(false);
+        ////timer.cancel();
+        taskHandle.cancel(false);
+    }
+
+    /**
+     * Main final termination and tidy
+     */
+    @Override
+    public void destroy() {
+        //No-op
+    }
+
+    /**
+     * Output to screen
+     * @param g Graphic to which to draw
+     */
+    @Override
+    public void paint(final Graphics g) {
+        engine.repaint();
+    }
+
+    /**
+     * Return parameter details
+     * @see Applet.getParameterInfo
+     */
+    @Override
+    public String[][] getParameterInfo() {
+        final String[][] t = {{"None"}, {"N/A"}, {"This applet is purely GUI driven"}};
+        return t; // NOPMD
+    }
+
+    /**
+     * Applicationizer function
+     */
+    public static void main(final String[] args) {
+        final EphemerisII self = new EphemerisII();
+        self.master = true;
+        self.init();
+        self.start();
+    }
 }
 
 /* end of file EphemerisII.java */

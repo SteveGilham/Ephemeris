@@ -1,4 +1,5 @@
 ﻿namespace EphemerisIII
+
 open System
 open System.Collections.Generic
 open System.IO
@@ -6,14 +7,17 @@ open System.Linq
 open System.Windows
 open System.Windows.Controls
 
-type App = class
-    inherit AppXaml
-    
-    new () as this = {} then
-        this.InitializeComponent()
-        // Enter construction logic here...
+type App =
+    class
+        inherit AppXaml
 
-        let mainPage = new MainPage()
-        Window.Current.Content <- mainPage;
+        new() as this =
+            { }
+            then
+                this.InitializeComponent()
+                // Enter construction logic here...
 
-end
+                let mainPage = new MainPage()
+                Window.Current.Content <- mainPage
+
+    end

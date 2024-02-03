@@ -39,7 +39,11 @@
       </TabItem>
       <TabItem x:Name="WizBox" Header="Wizard Mode">
       </TabItem>
-      <TabItem x:Name="License" Header="License">
+      <TabItem Header="License">
+        <ScrollViewer>
+          <TextBlock x:Name="License" Width="250" TextWrapping="Wrap">
+          </TextBlock>
+        </ScrollViewer>
       </TabItem>
     </TabControl>
     <StackPanel x:Name="StatusBar" DockPanel.Dock="Bottom" Orientation="Horizontal" />

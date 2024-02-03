@@ -9,8 +9,9 @@ open System.Windows.Controls
 
 type MainPage() as this =
     inherit MainPageXaml()
-    
-    // For code examples, refer to the OpenSilver Showcase app at: https://opensilver.net/gallery/
+
     do
         this.InitializeComponent()
-        // Enter construction logic here...
+
+        let license = this.FindName("License") :?> TextBlock
+        license.Text <- License.LICENSE_TEXT

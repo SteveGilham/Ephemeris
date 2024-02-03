@@ -1,0 +1,47 @@
+﻿<sdk:Page
+    x:Class="EphemerisIII.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:local="clr-namespace:EphemerisIII"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+  <DockPanel>
+    <Canvas x:Name="Engine" DockPanel.Dock="Left" />
+    <TabControl x:Name="Tab" DockPanel.Dock="Right">
+      <TabItem x:Name="Controls" Header="Navigation">
+      </TabItem>
+      <TabItem x:Name="Show" Header="Display options">
+        <StackPanel>
+          <CheckBox x:Name="cbSunpath" IsChecked="False">
+            <Label Content="Show sunpath" />
+          </CheckBox>
+          <CheckBox x:Name="cbSouthpath" IsChecked="False">
+            <Label Content="Show southpath" />
+          </CheckBox>
+          <CheckBox x:Name="cbNames" IsChecked="False">
+            <Label Content="Show names" />
+          </CheckBox>
+          <CheckBox x:Name="cbFrame" IsChecked="False">
+            <Label Content="Show Buserian frame" />
+          </CheckBox>
+          <CheckBox x:Name="cbLight" IsChecked="False">
+            <Label Content="Show Lightfore path" />
+          </CheckBox>
+          <CheckBox x:Name="cbObscure" IsChecked="True">
+            <Label Content="Show stars during day" />
+          </CheckBox>
+          <CheckBox x:Name="cbRing" IsChecked="False">
+            <Label Content="Real size objects" />
+          </CheckBox>
+        </StackPanel>
+      </TabItem>
+      <TabItem x:Name="WizBox" Header="Wizard Mode">
+      </TabItem>
+      <TabItem x:Name="License" Header="License">
+      </TabItem>
+    </TabControl>
+    <StackPanel x:Name="StatusBar" DockPanel.Dock="Bottom" Orientation="Horizontal" />
+  </DockPanel>
+</sdk:Page>

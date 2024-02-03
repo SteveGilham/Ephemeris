@@ -1,0 +1,15 @@
+draft/
+draft/.vs/
+draft/draft/draft.Browser/bin/
+draft/draft/draft.Browser/obj/
+draft/draft/draft.Simulator/bin/
+draft/draft/draft.Simulator/obj/
+draft/draft/draft/bin/
+draft/draft/draft/obj/
+EphemerisIII/.vs/
+EphemerisIII/EphemerisIII/EphemerisIII.Browser/bin/
+EphemerisIII/EphemerisIII/EphemerisIII.Browser/obj/
+EphemerisIII/EphemerisIII/EphemerisIII.Simulator/bin/
+EphemerisIII/EphemerisIII/EphemerisIII.Simulator/obj/
+EphemerisIII/EphemerisIII/EphemerisIII/bin/
+EphemerisIII/EphemerisIII/EphemerisIII/obj/

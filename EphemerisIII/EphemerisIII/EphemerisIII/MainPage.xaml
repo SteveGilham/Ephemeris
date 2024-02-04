@@ -14,30 +14,65 @@
       </TabItem>
       <TabItem x:Name="Show" Header="Display options">
         <StackPanel>
-          <CheckBox x:Name="cbSunpath" IsChecked="False">
+          <CheckBox x:Name="cbSunpath" IsChecked="False" Margin="0 5 0 5">
             <Label Content="Show sunpath" />
           </CheckBox>
-          <CheckBox x:Name="cbSouthpath" IsChecked="False">
+          <CheckBox x:Name="cbSouthpath" IsChecked="False" Margin="0 5 0 5">
             <Label Content="Show southpath" />
           </CheckBox>
-          <CheckBox x:Name="cbNames" IsChecked="False">
+          <CheckBox x:Name="cbNames" IsChecked="False" Margin="0 5 0 5">
             <Label Content="Show names" />
           </CheckBox>
-          <CheckBox x:Name="cbFrame" IsChecked="False">
+          <CheckBox x:Name="cbFrame" IsChecked="False" Margin="0 5 0 5">
             <Label Content="Show Buserian frame" />
           </CheckBox>
-          <CheckBox x:Name="cbLight" IsChecked="False">
+          <CheckBox x:Name="cbLight" IsChecked="False" Margin="0 5 0 5">
             <Label Content="Show Lightfore path" />
           </CheckBox>
-          <CheckBox x:Name="cbObscure" IsChecked="True">
+          <CheckBox x:Name="cbObscure" IsChecked="True" Margin="0 5 0 5">
             <Label Content="Show stars during day" />
           </CheckBox>
-          <CheckBox x:Name="cbRing" IsChecked="False">
+          <CheckBox x:Name="cbRing" IsChecked="False" Margin="0 5 0 5">
             <Label Content="Real size objects" />
           </CheckBox>
         </StackPanel>
       </TabItem>
       <TabItem x:Name="WizBox" Header="Wizard Mode">
+        <StackPanel>
+          <Label Content ="Dome size (km)" />
+          <NumericUpDown Name="Scalebar" DecimalPlaces="0" Minimum="20000" Maximum="250000" Increment="500" IsEditable="False" />
+          <CheckBox x:Name="Uleria" IsChecked="False" Margin="0 5 0 5">
+            <Label Content="Uleria period 1/3 siderial day" />
+          </CheckBox>
+          <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+            <Label Content ="Shargash rises year 1 on day" />
+            <NumericUpDown Name="Sharday" DecimalPlaces="0" Minimum="1" Maximum="28" Increment="1" IsEditable="False" />
+            <Label Content ="at hour (of 24)" />
+            <NumericUpDown Name="Sharhr" DecimalPlaces="1" Minimum="0" Maximum="24" Increment="0.1" IsEditable="False" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+            <Label Content ="Twinstar rises year 1 on day" />
+            <NumericUpDown Name="Twinday" DecimalPlaces="0" Minimum="1" Maximum="6" Increment="1" IsEditable="False" />
+            <Label Content ="at hour (of 24)" />
+            <NumericUpDown Name="Twinhr" DecimalPlaces="1" Minimum="0" Maximum="24" Increment="0.1" IsEditable="False" />
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+            <Label Content ="Artia rises year 1 on day" />
+            <NumericUpDown Name="Artiaday" DecimalPlaces="0" Minimum="1" Maximum="112" Increment="1" IsEditable="False" />
+            <Label Content ="at hour (of 24)" />
+            <NumericUpDown Name="Artiahr" DecimalPlaces="1" Minimum="0" Maximum="24" Increment="0.1" IsEditable="False" />
+          </StackPanel>
+          <!-- Label Content ="Summer tilt (deg)" Margin="0 5 0 0" />
+          <NumericUpDown Name="Stilt" DecimalPlaces="1" Minimum="0" Maximum="90" Increment="0.1" Value="9" IsEditable="False" />
+          <Label Content ="Equinox tilt (deg)"  Margin="0 5 0 0" />
+          <NumericUpDown Name="Etilt" DecimalPlaces="1" Minimum="-9" Maximum="10.6" Increment="0.1" Value="0" IsEditable="False" />
+          <Label Content ="Winter tilt (deg)"  Margin="0 5 0 5" />
+          <NumericUpDown Name="Wtilt" DecimalPlaces="1" Minimum="-90" Maximum="0" Increment="0.1" Value="-10.6" IsEditable="False" />
+          <Label Content ="Summer day length (hours/24)" Margin="0 5 0 0" />
+          <NumericUpDown Name="Sday" DecimalPlaces="1" Minimum="12" Maximum="24" Increment="0.1" Value="14" IsEditable="False" />
+          <Label Content ="Winter day length (hours/24)" Margin="0 5 0 0" />
+          <NumericUpDown Name="Wday" DecimalPlaces="1" Minimum="0" Maximum="12" Increment="0.1" Value="9.1" IsEditable="False" / -->
+        </StackPanel>
       </TabItem>
       <TabItem Header="License">
         <ScrollViewer>

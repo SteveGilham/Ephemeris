@@ -6,11 +6,88 @@
     xmlns:local="clr-namespace:EphemerisIII"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d">
   <DockPanel>
     <Canvas x:Name="Engine" DockPanel.Dock="Left" />
     <TabControl x:Name="Tab" DockPanel.Dock="Right">
       <TabItem x:Name="Controls" Header="Navigation">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <StackPanel Grid.Column="0" Margin="0 0 10 0">
+            <Label Content="Calendar" Margin="0 0 0 2" />
+            <ComboBox  SelectedIndex="5">
+              <sys:String>Astronometric</sys:String>
+              <sys:String>Western</sys:String>
+              <sys:String>Western</sys:String>
+              <sys:String>Eastern</sys:String>
+              <sys:String>Pamaltelan</sys:String>
+              <sys:String>Orlanthi</sys:String>
+              <sys:String>Pelorian</sys:String>
+            </ComboBox>
+            <Label Content="Jump to Holy Day of" Margin="0 20 0 0" />
+            <ComboBox SelectedIndex="0">
+              <sys:String>-</sys:String>
+              <sys:String>Voria</sys:String>
+              <sys:String>Gorgorma</sys:String>
+              <sys:String>Uleria</sys:String>
+              <sys:String>Flamal</sys:String>
+              <sys:String>Triolina</sys:String>
+              <sys:String>Dormal</sys:String>
+              <sys:String>Bagog</sys:String>
+              <sys:String>[Summer Solstice]</sys:String>
+              <sys:String>Invisible God</sys:String>
+              <sys:String>Red Goddess</sys:String>
+              <sys:String>Yelmalio</sys:String>
+              <sys:String>Pamalt</sys:String>
+              <sys:String>Babeester Gor</sys:String>
+              <sys:String>Asrelia</sys:String>
+              <sys:String>Earth Goddesses</sys:String>
+              <sys:String>Lodril</sys:String>
+              <sys:String>Maran Gor</sys:String>
+              <sys:String>Lokarnos</sys:String>
+              <sys:String>Kyger Litor, 7 Mothers</sys:String>
+              <sys:String>Argan Argar</sys:String>
+              <sys:String>Zorak Zoran</sys:String>
+              <sys:String>Waha the Butcher</sys:String>
+              <sys:String>Xiola Umbar</sys:String>
+              <sys:String>Valind</sys:String>
+              <sys:String>Magasta</sys:String>
+              <sys:String>Subere</sys:String>
+              <sys:String>Godunya</sys:String>
+              <sys:String>Ty Kora Tek</sys:String>
+              <sys:String>[Winter Solstice]</sys:String>
+              <sys:String>Donandar</sys:String>
+              <sys:String>Humakt</sys:String>
+              <sys:String>Storm Bull</sys:String>
+              <sys:String>Tsankth</sys:String>
+              <sys:String>Orlanth</sys:String>
+              <sys:String>Unholy Trio</sys:String>
+              <sys:String>Issaries</sys:String>
+              <sys:String>Lhankor Mhy</sys:String>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Grid.Column="1">
+            <Label Content="Current Time" Margin="0 0 0 2" />
+            <Label Content ="Minutes" />
+            <NumericUpDown Name="MinBar" DecimalPlaces="0" Minimum="0" Maximum="59" Increment="1" IsEditable="False" />
+            <Label Content ="Hours" />
+            <NumericUpDown Name="HrBar" DecimalPlaces="0" Minimum="0" Maximum="23" Increment="1" IsEditable="False" />
+            <Label Content ="Day of Week" />
+            <NumericUpDown Name="DoWBar" DecimalPlaces="0" Minimum="0" Maximum="6" Increment="1" IsEditable="False" />
+            <Label Content ="Week" />
+            <NumericUpDown Name="WkBar" DecimalPlaces="0" Minimum="0" Maximum="41" Increment="1" IsEditable="False" />
+            <Label Content ="Year" />
+            <NumericUpDown Name="YrBar" DecimalPlaces="0" Minimum="-11000" Maximum="2500" Value="1600" Increment="1" IsEditable="False" />
+          </StackPanel>
+        </Grid>
       </TabItem>
       <TabItem x:Name="Show" Header="Display options">
         <StackPanel>
@@ -81,6 +158,9 @@
         </ScrollViewer>
       </TabItem>
     </TabControl>
-    <StackPanel x:Name="StatusBar" DockPanel.Dock="Bottom" Orientation="Horizontal" />
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+      <Label x:Name="StatusBar" Content="Freezeday 00:00:00     Disorder week Sea season 1600ST" Margin="5 0 5 0" />
+      <Label x:Name="Hitfield" Content=""></Label>
+    </StackPanel>
   </DockPanel>
 </sdk:Page>

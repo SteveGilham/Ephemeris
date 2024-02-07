@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="textured_paper.png" />
     <Compile Include="License.fs" />
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -25,5 +26,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
+
+  <ItemGroup />
   
 </Project>

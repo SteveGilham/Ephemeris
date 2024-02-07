@@ -9,6 +9,9 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     mc:Ignorable="d">
   <DockPanel>
+    <DockPanel.Background>
+      <ImageBrush ImageSource="ms-appx://textured_paper.png" />
+    </DockPanel.Background>
     <Canvas x:Name="Engine" DockPanel.Dock="Left" />
     <TabControl x:Name="Tab" DockPanel.Dock="Right">
       <TabItem x:Name="Controls" Header="Navigation">

@@ -12,10 +12,21 @@
     <DockPanel.Background>
       <ImageBrush ImageSource="ms-appx://textured_paper.png" />
     </DockPanel.Background>
-    <Canvas x:Name="Engine" DockPanel.Dock="Left" />
-    <TabControl x:Name="Tab" DockPanel.Dock="Right">
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+      <Label x:Name="StatusBar" Content="Freezeday 00:00:00     Disorder week Sea season 1600ST" Margin="5 0 5 0" />
+      <Label x:Name="Hitfield" Content=""></Label>
+    </StackPanel>
+    <Canvas x:Name="Engine" DockPanel.Dock="Left" MinHeight="600" MinWidth="600">
+      <Canvas.Background>
+        <SolidColorBrush Color="Black" />
+      </Canvas.Background>
+    </Canvas>
+    <TabControl x:Name="Tab" DockPanel.Dock="Right" MinWidth="375">
       <TabItem x:Name="Controls" Header="Navigation">
         <Grid>
+          <Grid.Background>
+            <ImageBrush ImageSource="ms-appx://textured_paper.png" />
+          </Grid.Background>
           <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -78,7 +89,18 @@
             </ComboBox>
 
             <Label Content="Time Step" Margin="0 10 0 2" />
-            <StackPanel Orientation="Horizontal">
+            <ComboBox  SelectedIndex="2">
+              <sys:String>1 second</sys:String>
+              <sys:String>1 minute</sys:String>
+              <sys:String>10 minutes</sys:String>
+              <sys:String>1 hour</sys:String>
+              <sys:String>1 day</sys:String>
+              <sys:String>1 sidereal day</sys:String>
+              <sys:String>1 solar day</sys:String>
+              <sys:String>Custom</sys:String>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
               <NumericUpDown Name="ScaleBar" DecimalPlaces="0" Minimum="0" Maximum="60" Increment="1" IsEditable="False" Value="30" />
               <ComboBox SelectedIndex="0">
                 <sys:String>Minutes</sys:String>
@@ -108,21 +130,27 @@
           <StackPanel Grid.Column="1">
             <Label Content="Current Time" Margin="0 0 0 2" />
             <Label Content ="Minutes" />
-            <NumericUpDown Name="MinBar" DecimalPlaces="0" Minimum="0" Maximum="59" Increment="1" IsEditable="False" />
+            <NumericUpDown Name="MinBar" DecimalPlaces="0" Minimum="0" Maximum="59" Increment="1" IsEditable="True" />
             <Label Content ="Hours" />
-            <NumericUpDown Name="HrBar" DecimalPlaces="0" Minimum="0" Maximum="23" Increment="1" IsEditable="False" />
+            <NumericUpDown Name="HrBar" DecimalPlaces="0" Minimum="0" Maximum="23" Increment="1" IsEditable="True" />
             <Label Content ="Day of Week" />
-            <NumericUpDown Name="DoWBar" DecimalPlaces="0" Minimum="0" Maximum="6" Increment="1" IsEditable="False" />
+            <NumericUpDown Name="DoWBar" DecimalPlaces="0" Minimum="0" Maximum="6" Increment="1" IsEditable="True" />
             <Label Content ="Week" />
-            <NumericUpDown Name="WkBar" DecimalPlaces="0" Minimum="0" Maximum="41" Increment="1" IsEditable="False" />
+            <NumericUpDown Name="WkBar" DecimalPlaces="0" Minimum="0" Maximum="41" Increment="1" IsEditable="True" />
             <Label Content ="Year" />
-            <NumericUpDown Name="YrBar" DecimalPlaces="0" Minimum="-11000" Maximum="2500" Value="1600" Increment="1" IsEditable="False" />
+            <NumericUpDown Name="YrBar" DecimalPlaces="0" Minimum="0" Maximum="99" Value="0" Increment="1" IsEditable="True" />
+            <Label Content ="Century" />
+            <NumericUpDown Name="CentBar" DecimalPlaces="0" Minimum="-110" Maximum="25" Value="16" Increment="1" IsEditable="True" />
           </StackPanel>
-          <StackPanel Grid.Column="0" Grid.Row="1">
-            <Label>E2LocatorPanel</Label>
-          </StackPanel>
-          <StackPanel Grid.Column="1" Grid.Row="1">
-            <Label>E2LookPanel</Label>
+          <Canvas Grid.Column="0" Grid.Row="1" Height="165" Width="191" Margin="5">
+            <Canvas.Background>
+              <ImageBrush ImageSource="ms-appx://map.png" />
+            </Canvas.Background>
+          </Canvas>
+          <StackPanel Grid.Column="1" Grid.Row="1" Height="140" Width="140" Margin="5">
+            <Canvas.Background>
+              <ImageBrush ImageSource="ms-appx://target.png" />
+            </Canvas.Background>
           </StackPanel>
         </Grid>
       </TabItem>
@@ -195,9 +223,5 @@
         </ScrollViewer>
       </TabItem>
     </TabControl>
-    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-      <Label x:Name="StatusBar" Content="Freezeday 00:00:00     Disorder week Sea season 1600ST" Margin="5 0 5 0" />
-      <Label x:Name="Hitfield" Content=""></Label>
-    </StackPanel>
   </DockPanel>
 </sdk:Page>

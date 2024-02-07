@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="map.png" />
+    <Content Include="target.png" />
     <Content Include="textured_paper.png" />
     <Compile Include="License.fs" />
     <Page Include="MainPage.xaml">

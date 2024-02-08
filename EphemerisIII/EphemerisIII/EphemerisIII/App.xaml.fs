@@ -8,16 +8,16 @@ open System.Windows
 open System.Windows.Controls
 
 type App =
-    class
-        inherit AppXaml
+  class
+    inherit AppXaml
 
-        new() as this =
-            { }
-            then
-                this.InitializeComponent()
-                // Enter construction logic here...
+    new() as this =
+      { }
+      then
+        this.InitializeComponent()
+        // Enter construction logic here...
 
-                let mainPage = new MainPage()
-                Window.Current.Content <- mainPage
+        let mainPage = new MainPage()
+        Window.Current.Content <- mainPage
 
-    end
+  end

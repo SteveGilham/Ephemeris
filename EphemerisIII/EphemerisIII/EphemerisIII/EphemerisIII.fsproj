@@ -15,6 +15,8 @@
     <Content Include="target.png" />
     <Content Include="textured_paper.png" />
     <Compile Include="License.fs" />
+    <Compile Include="Names.fs" />
+    <Compile Include="ModelTime.fs" />
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -28,7 +30,5 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup />
   
 </Project>

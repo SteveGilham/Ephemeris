@@ -13,7 +13,7 @@
       <ImageBrush ImageSource="ms-appx://textured_paper.png" />
     </DockPanel.Background>
     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-      <Label x:Name="StatusBar" Content="Freezeday 00:00:00     Disorder week Sea season 1600ST" Margin="5 0 5 0" />
+      <Label x:Name="StatusBar" Content="00:00:00  Freezeday     Disorder week Sea season 1600ST" Margin="5 0 5 0" />
       <Label x:Name="Hitfield" Content=""></Label>
     </StackPanel>
     <Canvas x:Name="Engine" DockPanel.Dock="Left" MinHeight="600" MinWidth="600">
@@ -134,7 +134,7 @@
             <Label Content ="Hours" />
             <NumericUpDown Name="HrBar" DecimalPlaces="0" Minimum="0" Maximum="23" Increment="1" IsEditable="True" />
             <Label Content ="Day of Week" />
-            <NumericUpDown Name="DoWBar" DecimalPlaces="0" Minimum="0" Maximum="6" Increment="1" IsEditable="True" />
+            <NumericUpDown Name="DoWBar" DecimalPlaces="0" Minimum="1" Maximum="7" Increment="1" IsEditable="True" />
             <Label Content ="Week" />
             <NumericUpDown Name="WkBar" DecimalPlaces="0" Minimum="0" Maximum="41" Increment="1" IsEditable="True" />
             <Label Content ="Year" />

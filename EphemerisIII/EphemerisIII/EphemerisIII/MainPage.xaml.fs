@@ -39,6 +39,11 @@ type MainPage() as this =
     let statusBar =
       this.FindName("StatusBar") :?> Label
 
+    let holyDays =
+      this.FindName("HolyDays") :?> ComboBox
+
+    let mutable suspend = false
+
     let round: float -> int = Math.Round >> int
 
     let toTime () : Time =
@@ -52,11 +57,31 @@ type MainPage() as this =
       ModelTime.Now <- toTime ()
       statusBar.Content <- ModelTime.Now.ToString()
 
+      if not suspend then
+        holyDays.SelectedIndex <-
+          match
+            List.tryFindIndex (fun x -> x = (1 + ModelTime.Now.Day)) Names.holyDates
+          with
+          | Some n -> n
+          | _ -> 0
+
     minBar.ValueChanged.Add update
     hrBar.ValueChanged.Add update
     wkBar.ValueChanged.Add update
     dowBar.ValueChanged.Add update
     yrBar.ValueChanged.Add update
     centBar.ValueChanged.Add update
+
+    holyDays.SelectionChanged.Add(fun _ ->
+      if holyDays.SelectedIndex > 0 then
+        let day =
+          Names.holyDates[holyDays.SelectedIndex] - 1
+
+        try
+          suspend <- true
+          wkBar.Value <- float (day / 7)
+          dowBar.Value <- float (day % 7)
+        finally
+          suspend <- false)
 
     update ()

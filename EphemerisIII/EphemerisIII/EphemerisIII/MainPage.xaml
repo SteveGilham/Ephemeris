@@ -47,7 +47,7 @@
               <sys:String>Pelorian</sys:String>
             </ComboBox>
             <Label Content="Jump to Holy Day of" Margin="0 20 0 0" />
-            <ComboBox SelectedIndex="0">
+            <ComboBox Name="HolyDays" SelectedIndex="0">
               <sys:String>-</sys:String>
               <sys:String>Voria</sys:String>
               <sys:String>Gorgorma</sys:String>

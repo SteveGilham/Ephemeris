@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <Content Include="map.png" />
-    <Content Include="target.png" />
     <Content Include="textured_paper.png" />
     <Compile Include="License.fs" />
     <Compile Include="Names.fs" />

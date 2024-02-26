@@ -17,3 +17,6 @@ EphemerisIII/EphemerisIII/EphemerisIII.Browser/wwwroot/libs/
 EphemerisIII/EphemerisIII/EphemerisIII.Browser/wwwroot/resources/
 OpenSilverApplication1/
 *.class
+DecodeMap/.vs/
+DecodeMap/bin/
+DecodeMap/obj/

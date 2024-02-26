@@ -16,10 +16,17 @@
       <Label x:Name="StatusBar" Content="00:00:00  Freezeday     Disorder week Sea season 1600ST" Margin="5 0 5 0" />
       <Label x:Name="Hitfield" Content=""></Label>
     </StackPanel>
-    <Canvas x:Name="Engine" DockPanel.Dock="Left" MinHeight="600" MinWidth="600">
+    <Canvas x:Name="Engine" DockPanel.Dock="Left" MinHeight="601" MinWidth="601">
       <Canvas.Background>
         <SolidColorBrush Color="Black" />
       </Canvas.Background>
+      <Path Name="Lower" Stroke="Green" StrokeThickness="5" Data="M 25,300 A 90,90 90 1 0 576,300" />
+      <Path Name="Upper" Stroke="Green" StrokeThickness="5" Data="M 576,300 A 90,90 90 1 0 25,300" />
+      <Line Name="Horizon" StrokeThickness = "3" Stroke="Green" X1="25" Y1="300" X2="576" Y2="300"></Line>
+      <TextBlock Height="28" FontSize="25" FontWeight="800" Canvas.Left="290" Canvas.Top="-4" Name="North" Foreground="White" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="24">N</TextBlock>
+      <TextBlock Height="28" FontSize="25" FontWeight="800" Canvas.Left="290" Canvas.Top="570" Name="South" Foreground="Green" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="24">S</TextBlock>
+      <TextBlock Height="28" FontSize="25" FontWeight="800" Canvas.Left="0" Canvas.Top="280" Name="East" Foreground="Yellow" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="24">E</TextBlock>
+      <TextBlock Height="28" FontSize="25" FontWeight="800" Canvas.Left="575" Canvas.Top="280" Name="West" Foreground="Cyan" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="24">W</TextBlock>
     </Canvas>
     <TabControl x:Name="Tab" DockPanel.Dock="Right" MinWidth="375">
       <TabItem x:Name="Controls" Header="Navigation">

@@ -146,12 +146,41 @@
             <Canvas.Background>
               <ImageBrush ImageSource="ms-appx://map.png" />
             </Canvas.Background>
+            <Path Name="Viewpoint" Fill = "DarkSlateGray" StrokeThickness = "1" Stroke="Yellow">
+              <Path.Data>
+                <EllipseGeometry Center="91,98" RadiusX="3" RadiusY="3" />
+              </Path.Data>
+            </Path>
           </Canvas>
-          <StackPanel Grid.Column="1" Grid.Row="1" Height="140" Width="140" Margin="5">
-            <Canvas.Background>
-              <ImageBrush ImageSource="ms-appx://target.png" />
-            </Canvas.Background>
-          </StackPanel>
+          <Canvas Grid.Column="1" Grid.Row="1" Height="187" Width="187" Margin="5">
+            <Path StrokeThickness = "2" Stroke="Gray" Fill="Gray">
+              <Path.Data>
+                <EllipseGeometry Center="94,94" RadiusX="93" RadiusY="93" />
+              </Path.Data>
+            </Path>
+            <Path Stroke="Black" StrokeThickness="2" Data="M 31,159 A 90,90 90 1 0 158,30" />
+            <Path Stroke="White" StrokeThickness="2" Data="M 157,29 A 90,90 90 1 0 29,158" />
+            <Path StrokeThickness = "3" Stroke="Green">
+              <Path.Data>
+                <EllipseGeometry Center="94,94" RadiusX="89" RadiusY="89" />
+              </Path.Data>
+            </Path>
+            <Path StrokeThickness = "1" Stroke="Blue">
+              <Path.Data>
+                <EllipseGeometry Center="94,94" RadiusX="45" RadiusY="45" />
+              </Path.Data>
+            </Path>
+            <Line StrokeThickness = "1" Stroke="blue" X1="93" Y1="3" X2="94" Y2="48"></Line>
+            <Line StrokeThickness = "1" Stroke="blue" X1="94" Y1="184" X2="94" Y2="139"></Line>
+            <Line StrokeThickness = "1" Stroke="blue" Y1="94" X1="3" Y2="94" X2="48"></Line>
+            <Line StrokeThickness = "1" Stroke="blue" Y1="94" X1="184" Y2="94" X2="139"></Line>
+            <Path Name="Lookat" Fill = "Red" StrokeThickness = "1" Stroke="Red">
+              <Path.Data>
+                <EllipseGeometry Center="94,139" RadiusX="3" RadiusY="3" />
+              </Path.Data>
+            </Path>
+            <Line Name="Pointer" StrokeThickness = "1" Stroke="Red" X1="94" Y1="94" X2="94" Y2="139"></Line>
+          </Canvas>
         </Grid>
       </TabItem>
       <TabItem x:Name="Show" Header="Display options">

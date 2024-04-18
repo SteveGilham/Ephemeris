@@ -1,0 +1,4 @@
+<svg width="6400" height="6400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="6400" height="6400" x="0" y="0" fill="black" />
+  <circle x="3201" y="3201" r="2543" stroke="green" stroke-width="3"  transform="translate(3201,3201)"/>
+</svg>

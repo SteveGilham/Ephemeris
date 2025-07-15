@@ -1,0 +1,38 @@
+<Window x:Class="Ephemeris.WPF.EphemerisIIFrame"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ephemeris.WPF"
+        mc:Ignorable="d"
+        Title="Gloranthan Ephemeris" Height="450" Width="800">
+    <DockPanel>
+        <TextBox x:Name="CalendarTextBox" DockPanel.Dock="Bottom" IsReadOnly="True" TextAlignment="Center" Margin="5"/>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Show">
+                <MenuItem x:Name="CbSunPath" Header="Show sunpath" IsCheckable="True"/>
+                <MenuItem x:Name="CbSouthPath" Header="Show southpath" IsCheckable="True"/>
+                <MenuItem x:Name="CbNames" Header="Show names" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="CbFrame" Header="Show Buserian frame" IsCheckable="True"/>
+                <MenuItem x:Name="CbLight" Header="Show Lightfore path" IsCheckable="True"/>
+                <MenuItem x:Name="CbObscure" Header="Show stars during day" IsCheckable="True" IsChecked="True"/>
+                <Separator/>
+                <MenuItem x:Name="WizardMenuItem" Header="Show wizard mode controls" IsCheckable="True" Checked="WizardMenuItem_Checked" Unchecked="WizardMenuItem_Unchecked"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" Click="About_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ContentControl x:Name="AnimationContentControl" Focusable="False" Grid.Column="0"/>
+            <local:EphemerisIIControlPanel x:Name="ControlPanel" Grid.Column="1"/>
+        </Grid>
+    </DockPanel>
+</Window>

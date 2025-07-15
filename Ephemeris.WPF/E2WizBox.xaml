@@ -1,0 +1,52 @@
+<Window x:Class="Ephemeris.WPF.E2WizBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ephemeris.WPF"
+        mc:Ignorable="d"
+        Title="Wizard mode controls" Height="450" Width="800">
+    <Grid Background="LightGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="5">
+            <Label Content="Dome size 000s km"/>
+            <local:Slider x:Name="ScaleBar" Value="20" Minimum="20" Maximum="250" VisibleRange="5"/>
+            <Label x:Name="ScaleLabel" Content="20"/>
+            <RadioButton x:Name="NineDegreeTilt" Content="9/10.6 degree tilt" GroupName="TiltGroup" IsChecked="True" Checked="NineDegreeTilt_Checked"/>
+            <RadioButton x:Name="YuthuOverhead" Content="Overhead at Yuthuppa (3600km N of centre)" GroupName="TiltGroup" Checked="YuthuOverhead_Checked"/>
+            <Label x:Name="TiltedLabel" Content=""/>
+            <RadioButton x:Name="VariableControl" Content="Freehand control of tilt and day length" GroupName="TiltGroup" Checked="VariableControl_Checked"/>
+            <CheckBox x:Name="UleriaPeriod" Content="Uleria period 1/3 siderial day" Checked="UleriaPeriod_Checked" Unchecked="UleriaPeriod_Unchecked"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="5">
+            <local:Slider x:Name="STilt" Value="9" Minimum="0" Maximum="90" VisibleRange="5"/>
+            <Label x:Name="STiltLabel" Content="Summer tilt 9 deg"/>
+            <local:Slider x:Name="ETilt" Value="0" Minimum="-11" Maximum="9" VisibleRange="5"/>
+            <Label x:Name="ETiltLabel" Content="Equinox tilt 0 deg"/>
+            <local:Slider x:Name="WTilt" Value="-11" Minimum="-90" Maximum="0" VisibleRange="5"/>
+            <Label x:Name="WTiltLabel" Content="Winter tilt -11 deg"/>
+            <local:Slider x:Name="SDay" Value="10" Minimum="0" Maximum="50" VisibleRange="5"/>
+            <Label x:Name="SDayLabel" Content="Summer day length 14.4h"/>
+            <local:Slider x:Name="WDay" Value="-12" Minimum="-50" Maximum="0" VisibleRange="5"/>
+            <Label x:Name="WDayLabel" Content="Winter day length 9.1h"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Margin="5">
+            <local:Slider x:Name="SharDay" Value="0" Minimum="0" Maximum="28" VisibleRange="5"/>
+            <Label x:Name="SharDayLabel" Content="Shargash rises day 1 year 1"/>
+            <local:Slider x:Name="SharHr" Value="0" Minimum="0" Maximum="144" VisibleRange="5"/>
+            <Label x:Name="SharHrLabel" Content="at 0h 0m"/>
+            <local:Slider x:Name="TwinDay" Value="0" Minimum="0" Maximum="6" VisibleRange="1"/>
+            <Label x:Name="TwinDayLabel" Content="Twinstar rises day 1 year 1"/>
+            <local:Slider x:Name="TwinHr" Value="0" Minimum="0" Maximum="144" VisibleRange="5"/>
+            <Label x:Name="TwinHrLabel" Content="at 0h 0m"/>
+            <local:Slider x:Name="ArtiaDay" Value="0" Minimum="0" Maximum="112" VisibleRange="5"/>
+            <Label x:Name="ArtiaDayLabel" Content="Artia rises day 1 year 1"/>
+            <local:Slider x:Name="ArtiaHr" Value="0" Minimum="0" Maximum="144" VisibleRange="5"/>
+            <Label x:Name="ArtiaHrLabel" Content="at 0h 0m"/>
+        </StackPanel>
+    </Grid>
+</Window>

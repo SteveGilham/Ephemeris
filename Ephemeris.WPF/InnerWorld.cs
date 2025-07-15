@@ -4,13 +4,14 @@ using System.Collections.Generic;
 
 namespace Ephemeris.WPF
 {
-    public static class InnerWorld
-    {
-        private static int width = 194;
-        private static int height = 168;
-        private static int[] col = { unchecked((int)0xFF0082FF), unchecked((int)0xFF000000), unchecked((int)0xFFFFFFFF), unchecked((int)0xFF008200) }; // Colors for the palette
-        private static long[] image = {
-            unchecked((long)0x540BF93411741E7), unchecked((long)0x620540BF93411742), unchecked((long)0xE740200541BF9241),
+  public static class InnerWorld
+  {
+    private static int width = 194;
+    private static int height = 168;
+    private static int[] col = { unchecked((int)0xFF0082FF), unchecked((int)0xFF000000), unchecked((int)0xFFFFFFFF), unchecked((int)0xFF008200) }; // Colors for the palette
+
+    private static readonly ulong[] image = [
+            0x540BF93411741E7, 0x620540BF93411742, 0xE740200541BF9241,
             0x7470841e6412006L, 0x41bf90410840c543L, 0x640e640210741bfL,
             0x894080440841c840L, 0x146e441210842bfL, 0x83490940c9400045L,
             0x40e040c1412209L, 0x42bf8044c4410941L, 0xc849df45220b41bdL,
@@ -77,7 +78,7 @@ namespace Ephemeris.WPF
             0x47c04a0124423f37L, 0x410440c048c042c1L, 0x40c0430324453f25L,
             0x44014001480048c1L, 0x44c0470325442240L, 0x410a4002420341L,
             0x2641004100410148L, 0x48c14e02204102L, 0x4322520048114013L,
-            0x44004200480041c0L, 0x45c14ac042011e47L, 0x2b4124460f51005bL, 
+            0x44004200480041c0L, 0x45c14ac042011e47L, 0x2b4124460f51005bL,
             0x11d42014205402bL, 0x431945c0432345c0L,
             0x42c04bc040021c47L, 0x54329431940c045L, 0xc0421b410442c045L,
             0xc04ac1431b470345L, 0x2a431941c043c140L, 0xc0401b41024bc044L,
@@ -137,44 +138,44 @@ namespace Ephemeris.WPF
             0x42e844f1410d411bL, 0xc745c24301420041L, 0xd441e742f4410e40L,
             0x1bce4402410141feL, 0x42f4412bce410041L, 0x2410141fff341c1L,
             0x402bcf4004420141L, 0xfff342c0402bcf41L, 0x3420141fff3442bL
-        };
+        ];
 
-        public static BitmapSource GetBitmapSource()
+    public static BitmapSource GetBitmapSource()
+    {
+      byte[] pixels = new byte[width * height];
+      long byteno = 56;
+      int buffindex = 0;
+      int pixelIndex = 0;
+
+      for (int y = 0; y < height; ++y)
+      {
+        int x = 0;
+        while (x < width)
         {
-            byte[] pixels = new byte[width * height];
-            long byteno = 56;
-            int buffindex = 0;
-            int pixelIndex = 0;
+          byte b = (byte)((image[buffindex] >> (int)byteno) & (0xFF));
+          byteno -= 8;
+          if (byteno < 0) { byteno = 56; ++buffindex; }
+          int run = (b & 0x3F) + 1;
+          byte pixelValue = (byte)((b >> 6) & 0x3);
 
-            for (int y = 0; y < height; ++y)
-            {
-                int x = 0;
-                while (x < width)
-                {
-                    byte b = (byte)((image[buffindex] >> (int)byteno) & (0xFF));
-                    byteno -= 8;
-                    if (byteno < 0) { byteno = 56; ++buffindex; }
-                    int run = (b & 0x3F) + 1;
-                    byte pixelValue = (byte)((b >> 6) & 0x3);
-
-                    for (int i = 0; i < run && x < width; ++i, ++x)
-                    {
-                        pixels[pixelIndex++] = pixelValue;
-                    }
-                }
-            }
-
-            // Create a palette for the 2-bit (4-color) image
-            List<Color> colors = new List<Color>();
-            foreach (int c in col)
-            {
-                colors.Add(Color.FromArgb((byte)((c >> 24) & 0xFF), (byte)((c >> 16) & 0xFF), (byte)((c >> 8) & 0xFF), (byte)(c & 0xFF)));
-            }
-            BitmapPalette palette = new BitmapPalette(colors);
-
-            return BitmapSource.Create(
-                width, height, 96, 96, PixelFormats.Indexed2,
-                palette, pixels, (width + 3) / 4); // Stride for 2-bit image
+          for (int i = 0; i < run && x < width; ++i, ++x)
+          {
+            pixels[pixelIndex++] = pixelValue;
+          }
         }
+      }
+
+      // Create a palette for the 2-bit (4-color) image
+      List<Color> colors = [];
+      foreach (int c in col)
+      {
+        colors.Add(Color.FromArgb((byte)((c >> 24) & 0xFF), (byte)((c >> 16) & 0xFF), (byte)((c >> 8) & 0xFF), (byte)(c & 0xFF)));
+      }
+      BitmapPalette palette = new(colors);
+
+      return BitmapSource.Create(
+          width, height, 96, 96, PixelFormats.Indexed2,
+          palette, pixels, (width + 3) / 4); // Stride for 2-bit image
     }
+  }
 }

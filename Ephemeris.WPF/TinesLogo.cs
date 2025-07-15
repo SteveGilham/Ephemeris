@@ -3,13 +3,14 @@ using System.Windows.Media.Imaging;
 
 namespace Ephemeris.WPF
 {
-    public static class TinesLogo
-    {
-        private static int width = 118;
-        private static int height = 118;
-        private static int[] col = { unchecked((int)0xFF000000), unchecked((int)0xFFFFFFFF) }; // Black, White
-        private static long[] image = {
-            unchecked((long)0xF5F5F5F5F5F5F5F5), unchecked((long)0xF5F5F5F5F5F5F5F5), unchecked((long)0xF5F5F5F5A307C9A1),
+  public static class TinesLogo
+  {
+    private static readonly int width = 118;
+    private static readonly int height = 118;
+    private static readonly int[] col = [unchecked((int)0xFF000000), unchecked((int)0xFFFFFFFF)]; // Black, White
+
+    private static readonly ulong[] image = [
+            0xF5F5F5F5F5F5F5F5, 0xF5F5F5F5F5F5F5F5, 0xF5F5F5F5A307C9A1,
             0x184018004c4a000L, 0x8606c59f008a04c4L, 0xa00085028103c4a1L,
             0x84008303c4a201L, 0x83038101c4a30383L, 0x8101c4a5058201L,
             0xc4a80184009706a5L, 0xa801840094058101L, 0xa5a8018400920280L,
@@ -82,44 +83,44 @@ namespace Ephemeris.WPF
             0x282008e03918401L, 0x8003860080018003L, 0x8203841082049e03L,
             0x9183068305820482L, 0x158502b683038000L, 0x84048404d78f0088L,
             0xdaf5f5f5f5f5f5L, 0xf5f5f5f5f5f5f5f5L
-        };
+        ];
 
-        public static BitmapSource GetBitmapSource()
+    public static BitmapSource GetBitmapSource()
+    {
+      byte[] pixels = new byte[width * height];
+      long byteno = 56;
+      int buffindex = 0;
+      int pixelIndex = 0;
+
+      for (int y = 0; y < height; ++y)
+      {
+        int x = 0;
+        while (x < width)
         {
-            byte[] pixels = new byte[width * height];
-            long byteno = 56;
-            int buffindex = 0;
-            int pixelIndex = 0;
+          byte b = (byte)((image[buffindex] >> (int)byteno) & (0xFF));
+          byteno -= 8;
+          if (byteno < 0) { byteno = 56; ++buffindex; }
+          int run = (b & 0x7F) + 1;
+          byte pixelValue = (byte)(0x1 & (b >> 7));
 
-            for (int y = 0; y < height; ++y)
-            {
-                int x = 0;
-                while (x < width)
-                {
-                    byte b = (byte)((image[buffindex] >> (int)byteno) & (0xFF));
-                    byteno -= 8;
-                    if (byteno < 0) { byteno = 56; ++buffindex; }
-                    int run = (b & 0x7F) + 1;
-                    byte pixelValue = (byte)(0x1 & (b >> 7));
-
-                    for (int i = 0; i < run && x < width; ++i, ++x)
-                    {
-                        pixels[pixelIndex++] = pixelValue;
-                    }
-                }
-            }
-
-            // Create a palette for the 1-bit image
-            List<Color> colors = new List<Color>();
-            foreach (int c in col)
-            {
-                colors.Add(Color.FromArgb((byte)((c >> 24) & 0xFF), (byte)((c >> 16) & 0xFF), (byte)((c >> 8) & 0xFF), (byte)(c & 0xFF)));
-            }
-            BitmapPalette palette = new BitmapPalette(colors);
-
-            return BitmapSource.Create(
-                width, height, 96, 96, PixelFormats.Indexed1,
-                palette, pixels, width / 8);
+          for (int i = 0; i < run && x < width; ++i, ++x)
+          {
+            pixels[pixelIndex++] = pixelValue;
+          }
         }
+      }
+
+      // Create a palette for the 1-bit image
+      List<Color> colors = [];
+      foreach (int c in col)
+      {
+        colors.Add(Color.FromArgb((byte)((c >> 24) & 0xFF), (byte)((c >> 16) & 0xFF), (byte)((c >> 8) & 0xFF), (byte)(c & 0xFF)));
+      }
+      BitmapPalette palette = new(colors);
+
+      return BitmapSource.Create(
+          width, height, 96, 96, PixelFormats.Indexed1,
+          palette, pixels, width / 8);
     }
+  }
 }
